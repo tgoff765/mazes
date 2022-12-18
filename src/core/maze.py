@@ -2,6 +2,7 @@ from src.algos.mazebuilder import MazeBuilder
 from src.algos.binarytree import BinaryTree
 from src.algos.sidewinder import SideWinder
 from src.algos.aldousbroder import AldousBroder
+from src.algos.wilson import Wilson
 from enum import Enum
 from src.core.grid import ColorGrid, DistanceGrid
 from PIL import Image
@@ -11,6 +12,7 @@ class MazeType(Enum):
     BINARY = 1
     SIDEWINDER = 2
     ALDOUSBRODER = 3
+    WILSON = 4
 
 
 class Maze:
@@ -46,7 +48,8 @@ class Maze:
         maze_map = {
             MazeType.BINARY: BinaryTree,
             MazeType.SIDEWINDER: SideWinder,
-            MazeType.ALDOUSBRODER: AldousBroder
+            MazeType.ALDOUSBRODER: AldousBroder,
+            MazeType.WILSON: Wilson,
         }
 
         self.maze_builder = maze_map.get(maze_type)(**kwargs)

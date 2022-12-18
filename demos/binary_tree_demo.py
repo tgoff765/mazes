@@ -7,7 +7,7 @@ if __name__ == "__main__":
                 horizontal_bias=0.45)
 
     # Add another view on top of our existing maze
-    maze.analyze()
+    maze.draw()
 
 
 
