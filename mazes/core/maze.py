@@ -1,10 +1,11 @@
-from src.algos.mazebuilder import MazeBuilder
-from src.algos.binarytree import BinaryTree
-from src.algos.sidewinder import SideWinder
-from src.algos.aldousbroder import AldousBroder
-from src.algos.wilson import Wilson
+from mazes.algos.mazebuilder import MazeBuilder
+from mazes.algos.binarytree import BinaryTree
+from mazes.algos.sidewinder import SideWinder
+from mazes.algos.aldousbroder import AldousBroder
+from mazes.algos.huntandkill import HuntAndKill
+from mazes.algos.wilson import Wilson
 from enum import Enum
-from src.core.grid import ColorGrid, DistanceGrid
+from mazes.core.grid import ColorGrid, DistanceGrid
 from PIL import Image
 
 
@@ -13,12 +14,14 @@ class MazeType(Enum):
     SIDEWINDER = 2
     ALDOUSBRODER = 3
     WILSON = 4
+    HUNTANDKILL = 5
 
 
 class Maze:
     """
     Main driver for mazes. All client code should call this when creating and displaying mazes.
     """
+
     maze_type: str
     maze_builder: MazeBuilder
     maze: DistanceGrid
@@ -50,6 +53,7 @@ class Maze:
             MazeType.SIDEWINDER: SideWinder,
             MazeType.ALDOUSBRODER: AldousBroder,
             MazeType.WILSON: Wilson,
+            MazeType.HUNTANDKILL: HuntAndKill,
         }
 
         self.maze_builder = maze_map.get(maze_type)(**kwargs)
@@ -79,5 +83,7 @@ class Maze:
         Returns a colorgrid which when drawn colors in cells by how far in distance they are from the target cell
         Note: This does not edit the maze object, it returns a seperate view
         """
-        cg = ColorGrid(self.maze, kwargs.get("start_row", 0), kwargs.get("start_col", 0)).draw(**kwargs)
+        cg = ColorGrid(
+            self.maze, kwargs.get("start_row", 0), kwargs.get("start_col", 0)
+        ).draw(**kwargs)
         cg.show()

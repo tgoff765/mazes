@@ -1,7 +1,7 @@
 from mazes.core.maze import Maze, MazeType
 
 if __name__ == "__main__":
-    maze = Maze(MazeType.BINARY, columns=100, rows=100, horizontal_bias=0.45)
+    maze = Maze(MazeType.HUNTANDKILL, columns=50, rows=50)
 
     # Add another view on top of our existing maze
     maze.draw()
