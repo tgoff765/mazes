@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Lint and test
+    name: python test
 
     runs-on: ubuntu-latest
     strategy:
