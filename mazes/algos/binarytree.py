@@ -1,10 +1,9 @@
-from src.core.grid import DistanceGrid
+from mazes.core.grid import DistanceGrid
 from random import uniform
-from src.algos.mazebuilder import MazeBuilder
+from mazes.algos.mazebuilder import MazeBuilder
 
 
 class BinaryTree(MazeBuilder):
-
     def create_maze(self, **kwargs) -> DistanceGrid:
         """
         Generate a maze by walking through every cell in the grid and at each cell linking either the northern or
@@ -37,6 +36,3 @@ class BinaryTree(MazeBuilder):
                 cell.link(cell.north)
 
         return self.grid
-
-
-

@@ -1,10 +1,9 @@
-from src.core.grid import DistanceGrid
+from mazes.core.grid import DistanceGrid
 from random import choice, uniform
-from src.algos.mazebuilder import MazeBuilder
+from mazes.algos.mazebuilder import MazeBuilder
 
 
 class SideWinder(MazeBuilder):
-
     def create_maze(self, **kwargs) -> DistanceGrid:
         """
         Visit every cell in the gird and attach the eastern cell so long as the random number generated falls below the
@@ -27,12 +26,14 @@ class SideWinder(MazeBuilder):
             for cell in row:
                 run.append(cell)
                 # Indicator flags
-                at_eastern_boundary = (cell.east is None)
-                at_northern_boundary = (cell.north is None)
+                at_eastern_boundary = cell.east is None
+                at_northern_boundary = cell.north is None
                 # Close out the current run of we're at eastern_boundary or not at north and our random number
                 # flipped tells us to
-                should_close_out = at_eastern_boundary or (not at_northern_boundary
-                                                           and kwargs.get("horizontal_bias", 0.5) < uniform(0, 1))
+                should_close_out = at_eastern_boundary or (
+                    not at_northern_boundary
+                    and kwargs.get("horizontal_bias", 0.5) < uniform(0, 1)
+                )
 
                 if should_close_out:
                     # Pick a random cell in our current run

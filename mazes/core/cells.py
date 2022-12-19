@@ -1,27 +1,28 @@
 from typing import Dict, List
-from src.core.distances import Distances
+from mazes.core.distances import Distances
 
 
 class Cell:
     """
     Represents an individual cell of our maze
     """
+
     # Each cell should know where it is in the maze
     # Track what other cells are connected to this cell, as well as which cells lie N/E/S/W of it
     row: int
     column: int
-    north: 'Cell'
-    east: 'Cell'
-    west: 'Cell'
-    south: 'Cell'
-    neighboring_cells: Dict['Cell', bool]
+    north: "Cell"
+    east: "Cell"
+    west: "Cell"
+    south: "Cell"
+    neighboring_cells: Dict["Cell", bool]
 
     def __init__(self, row: int, column: int) -> None:
         self.row = row
         self.column = column
         self.neighboring_cells = {}
 
-    def link(self, cell_to_link: 'Cell', bidi: bool = True) -> None:
+    def link(self, cell_to_link: "Cell", bidi: bool = True) -> None:
         """
         Link another cell to this one, and optionally bidirectionally link the cell we're about to link to this one
         """
@@ -31,7 +32,7 @@ class Cell:
         if bidi:
             cell_to_link.neighboring_cells[self] = True
 
-    def unlink(self, cell_to_unlink: 'Cell', bidi: bool = True) -> None:
+    def unlink(self, cell_to_unlink: "Cell", bidi: bool = True) -> None:
         """
         Unlink another cell to this one, and optionally bidirectionally unlink the cell we're about to unlink to this one
         """
@@ -41,21 +42,21 @@ class Cell:
         if bidi:
             cell_to_unlink.neighboring_cells[self] = False
 
-    def links(self) -> List['Cell']:
+    def links(self) -> List["Cell"]:
         """
         Return all the cells linked to this cell
         """
 
         return [key for key in self.neighboring_cells.keys()]
 
-    def is_linked(self, other_cell: 'Cell') -> bool:
+    def is_linked(self, other_cell: "Cell") -> bool:
         """
         Returns T/F if the other_cell is linked to this one
         """
 
         return other_cell in self.neighboring_cells.keys()
 
-    def neighbors(self) -> List['Cell']:
+    def neighbors(self) -> List["Cell"]:
         """
         Return each of the immediate neighbor cells to this cell, regardless if they are linked to cell or not
         """
@@ -71,7 +72,7 @@ class Cell:
 
         return neighbors
 
-    def distances(self) -> 'Distances':
+    def distances(self) -> "Distances":
         """
         Calculate the distances to each of the other cells in the grid from the current cell
         """
@@ -92,7 +93,9 @@ class Cell:
                         continue
                     # Otherwise set cell distance to that unvistied cell as one more than the distance
                     # to the cell we're currently visiting
-                    distances.set_cell_distance(linked_cell, distances.get_cell_distance(cell) + 1)
+                    distances.set_cell_distance(
+                        linked_cell, distances.get_cell_distance(cell) + 1
+                    )
                     # Add linked_cell to visit on next pass
                     new_frontier.append(linked_cell)
 

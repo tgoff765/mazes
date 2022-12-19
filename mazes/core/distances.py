@@ -5,14 +5,17 @@ class Distances:
     """
     Holds distances from a root (origin cell) to every other cell in the maze
     """
-    root: 'Cell'
-    cells: Dict['Cell', int]  # Holds the distance from the root to the cell
 
-    def __init__(self, cell: 'Cell'):
+    root: "Cell"
+    cells: Dict["Cell", int]  # Holds the distance from the root to the cell
+
+    def __init__(self, cell: "Cell"):
         self.root = cell
-        self.cells = {self.root: 0}  # Instantiate a dict where the distance from the root to itself is 0
+        self.cells = {
+            self.root: 0
+        }  # Instantiate a dict where the distance from the root to itself is 0
 
-    def get_cell_distance(self, cell: 'Cell') -> Union[int, None]:
+    def get_cell_distance(self, cell: "Cell") -> Union[int, None]:
         """
         Get the distance from root to given cell
         """
@@ -21,19 +24,19 @@ class Distances:
         else:
             return None
 
-    def set_cell_distance(self, cell: 'Cell', dist: int) -> None:
+    def set_cell_distance(self, cell: "Cell", dist: int) -> None:
         """
         Set the distance from root to supplied cell
         """
         self.cells[cell] = dist
 
-    def get_all_cells(self) -> List['Cell']:
+    def get_all_cells(self) -> List["Cell"]:
         """
         Return a list of all the cells that we have recorded distances for
         """
         return list(self.cells.keys())
 
-    def path_to(self, goal: 'Cell') -> 'Distances':
+    def path_to(self, goal: "Cell") -> "Distances":
         """
         Use Dijkstra's algorithm to find a path from root to goal. Returns a distances mapping representing the
         shortest path to the goal
@@ -55,7 +58,7 @@ class Distances:
         # Return breadcrumbs, end result should be a path of distances from root to goal that is as short as possible
         return breadcrumbs
 
-    def max(self) -> tuple['Cell', int]:
+    def max(self) -> tuple["Cell", int]:
         """
         Calculate the maximum cell from root
         """

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.core.grid import DistanceGrid
+from mazes.core.grid import DistanceGrid
 from PIL import Image
 
 
@@ -7,6 +7,7 @@ class MazeBuilder(ABC):
     """
     Base ABC all maze building algorithms must implement
     """
+
     grid: DistanceGrid
 
     def __init__(self, **kwargs):
@@ -33,9 +34,10 @@ class MazeBuilder(ABC):
         Create a distance grid object of the created grid and find shortest path
         """
         # Calculate distances from starting node (default is path from upper NW corner to lower SE corner)
-        self.grid.find_path_to(kwargs.get("start_row", 0),
-                               kwargs.get("start_col", 0),
-                               kwargs.get("end_row", self.grid.rows - 1),
-                               kwargs.get("end_col", 0))
+        self.grid.find_path_to(
+            kwargs.get("start_row", 0),
+            kwargs.get("start_col", 0),
+            kwargs.get("end_row", self.grid.rows - 1),
+            kwargs.get("end_col", 0),
+        )
         return self.grid
-

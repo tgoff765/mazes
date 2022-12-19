@@ -1,7 +1,7 @@
 from typing import Generator, List, Union
 from random import randint
-from src.core.cells import Cell
-from src.core.distances import Distances
+from mazes.core.cells import Cell
+from mazes.core.distances import Distances
 from PIL import Image, ImageDraw
 
 
@@ -9,10 +9,11 @@ class Grid:
     """
     Wrapper class for a 2D array of cells
     """
+
     # Dimensions of the grid + containing 2D array of cells
     rows: int
     columns: int
-    grid: List[List['Cell']]
+    grid: List[List["Cell"]]
 
     def __init__(self, rows, columns):
         self.rows = rows
@@ -20,7 +21,7 @@ class Grid:
         self.prepare_grid()
         self.configure_grid()
 
-    def __getitem__(self, tup) -> Union['Cell', None]:
+    def __getitem__(self, tup) -> Union["Cell", None]:
         """
         Return a slice of the underlying grid only if the rows and columns are non-negative, otherwise return None
         This way we can access the Cell of a Grid by Grid[row, column]
@@ -28,6 +29,7 @@ class Grid:
         y, x = tup
         if 0 <= y <= (self.rows - 1) and 0 <= x <= (self.columns - 1):
             return self.grid[y][x]
+        return None
 
     def contents_of_cell(self, cell) -> str:
         """
@@ -76,7 +78,10 @@ class Grid:
         """
         Create a 2D array of row * column of Cells
         """
-        self.grid = [[Cell(row, column) for column in range(self.columns)] for row in range(self.rows)]
+        self.grid = [
+            [Cell(row, column) for column in range(self.columns)]
+            for row in range(self.rows)
+        ]
 
     def configure_grid(self) -> None:
         """
@@ -92,7 +97,7 @@ class Grid:
                 c.east = self[row, column + 1]
                 c.west = self[row, column - 1]
 
-    def random_cell(self) -> 'Cell':
+    def random_cell(self) -> "Cell":
         """
         Return a random cell from the Grid
         """
@@ -104,14 +109,14 @@ class Grid:
         """
         return self.rows * self.columns
 
-    def each_row(self) -> Generator[List['Cell'], None, None]:
+    def each_row(self) -> Generator[List["Cell"], None, None]:
         """
         Generator function for each row
         """
         for row in self.grid:
             yield row
 
-    def each_cell(self) -> Generator['Cell', None, None]:
+    def each_cell(self) -> Generator["Cell", None, None]:
         """
         Generator function for each cell
         """
@@ -136,7 +141,7 @@ class Grid:
 
         img_width = cell_size * self.columns
         img_height = cell_size * self.rows
-        im = Image.new('RGB', (img_width + 1, img_height + 1), canvas_color)
+        im = Image.new("RGB", (img_width + 1, img_height + 1), canvas_color)
 
         # Create a drawable version of the image
         draw = ImageDraw.Draw(im)
@@ -176,8 +181,14 @@ class Grid:
                             if not cell.is_linked(cell.east):
                                 eastern_boundary -= 0.5 * line_thickness
 
-                            draw.rectangle(((western_boundary, northern_boundary),
-                                            (eastern_boundary, southern_boundary)), color, color)
+                            draw.rectangle(
+                                (
+                                    (western_boundary, northern_boundary),
+                                    (eastern_boundary, southern_boundary),
+                                ),
+                                color,
+                                color,
+                            )
                     else:
                         # Since every cell draws its southern and eastern borders, we only have to
                         # draw northern and western borders if the cell has no neighbor in that direction
@@ -201,10 +212,11 @@ class DistanceGrid(Grid):
     """
     Subclass of grid that calculates distances from a root node using Dijkstra's method given an already configured grid
     """
+
     distances: Distances
     rows: int
     columns: int
-    grid: List[List['Cell']]
+    grid: List[List["Cell"]]
 
     def __init__(self, rows, columns):
         super().__init__(rows, columns)
@@ -218,7 +230,13 @@ class DistanceGrid(Grid):
         # Calculate the distance from the stating cell to every other cell in grid
         self.distances = starting_cell.distances()
 
-    def find_path_to(self, starting_cell_row, starting_cell_column, ending_cell_row, ending_row_column):
+    def find_path_to(
+        self,
+        starting_cell_row,
+        starting_cell_column,
+        ending_cell_row,
+        ending_row_column,
+    ):
         """
         Set the distance grid to hold the distances representing the shortest path from a starting and ending cell
         """
@@ -251,7 +269,8 @@ class ColorGrid(Grid):
     """
     Given a grid and cell coordinates, colors all cells according to their distance from the starting cell
     """
-    grid: List[List['Cell']]
+
+    grid: List[List["Cell"]]
     cell: Cell
     distances: Distances
     max: int
@@ -279,10 +298,6 @@ class ColorGrid(Grid):
         """
         distance = self.distances.get_cell_distance(cell)
         intensity = (self.max - distance) / self.max
-        dark = (255 * intensity)
+        dark = 255 * intensity
         bright = 128 + (127 * intensity)
         return int(intensity), int(dark), int(bright)
-
-
-
-

@@ -1,10 +1,9 @@
-from src.core.grid import DistanceGrid
+from mazes.core.grid import DistanceGrid
 from random import choice
-from src.algos.mazebuilder import MazeBuilder
+from mazes.algos.mazebuilder import MazeBuilder
 
 
 class Wilson(MazeBuilder):
-
     def create_maze(self, **kwargs) -> DistanceGrid:
         """
         Generate a maze by marking a cell visited, then visiting a random path in the maze. We erase and loops our
@@ -34,7 +33,7 @@ class Wilson(MazeBuilder):
                     # If we've formed a loop, truncate path up until the cell first appeared
                     # Add 1 to position so that it's included in the truncated slice
                     position = path.index(cell)
-                    path = path[0:position + 1]
+                    path = path[0 : position + 1]
                 else:
                     # Otherwise just append the cell to the path
                     path.append(cell)
@@ -43,7 +42,7 @@ class Wilson(MazeBuilder):
             # Iterate over each cell in our path (subtracting 1 from range so we stop 1 shy of the last element)
             for i in range(len(path) - 1):
                 # Link every element to its next neighbor and then delete it from our unvisited cell
-                path[i].link(path[i+1])
+                path[i].link(path[i + 1])
                 unvisited.remove(path[i])
 
         return self.grid
