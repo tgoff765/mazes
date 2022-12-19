@@ -1,11 +1,11 @@
-from mazes.algos.mazebuilder import MazeBuilder
-from mazes.algos.binarytree import BinaryTree
-from mazes.algos.sidewinder import SideWinder
-from mazes.algos.aldousbroder import AldousBroder
-from mazes.algos.huntandkill import HuntAndKill
-from mazes.algos.wilson import Wilson
+from maze_creator.algos.mazebuilder import MazeBuilder
+from maze_creator.algos.binarytree import BinaryTree
+from maze_creator.algos.sidewinder import SideWinder
+from maze_creator.algos.aldousbroder import AldousBroder
+from maze_creator.algos.huntandkill import HuntAndKill
+from maze_creator.algos.wilson import Wilson
 from enum import Enum
-from mazes.core.grid import ColorGrid, DistanceGrid
+from maze_creator.core.grid import ColorGrid, DistanceGrid
 from PIL import Image
 
 
@@ -19,7 +19,7 @@ class MazeType(Enum):
 
 class Maze:
     """
-    Main driver for mazes. All client code should call this when creating and displaying mazes.
+    Main driver for maze_creator. All client code should call this when creating and displaying maze_creator.
     """
 
     maze_type: str

@@ -1,9 +1,9 @@
 from typing import Union
 
-from mazes.core.cells import Cell
-from mazes.core.grid import DistanceGrid
+from maze_creator.core.cells import Cell
+from maze_creator.core.grid import DistanceGrid
 from random import choice
-from mazes.algos.mazebuilder import MazeBuilder
+from maze_creator.algos.mazebuilder import MazeBuilder
 
 
 class HuntAndKill(MazeBuilder):

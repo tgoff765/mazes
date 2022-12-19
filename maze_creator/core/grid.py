@@ -1,7 +1,7 @@
 from typing import Generator, List, Union
 from random import randint
-from mazes.core.cells import Cell
-from mazes.core.distances import Distances
+from maze_creator.core.cells import Cell
+from maze_creator.core.distances import Distances
 from PIL import Image, ImageDraw
 
 

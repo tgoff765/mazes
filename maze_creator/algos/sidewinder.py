@@ -1,6 +1,6 @@
-from mazes.core.grid import DistanceGrid
+from maze_creator.core.grid import DistanceGrid
 from random import choice, uniform
-from mazes.algos.mazebuilder import MazeBuilder
+from maze_creator.algos.mazebuilder import MazeBuilder
 
 
 class SideWinder(MazeBuilder):
@@ -13,7 +13,7 @@ class SideWinder(MazeBuilder):
         Note that a run is automatically closed out whenever it reaches the end of a row.
 
         When we reach the northernmost row, we connect the entire top row making one connected run. Thus, this algorithm
-        will always create mazes where the top row is connected (in the default orientation).
+        will always create maze_creator where the top row is connected (in the default orientation).
 
         Called the sidewinder algorithm because a solution can be found to the maze by winding from bottom to the top
         of the maze looking for the northern cell connection since at the very least every row must be connected to
