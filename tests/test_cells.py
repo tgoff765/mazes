@@ -1,4 +1,4 @@
-from mazes.core.cells import Cell
+from maze_creator.core.cells import Cell
 
 
 def test_no_neighbors():
