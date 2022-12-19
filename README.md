@@ -16,3 +16,4 @@ Once a maze has been created the following methods can be used:
 ## Update Log 
 - 2022-12-16: Initial release
 - 2022-12-18: Adding Wilson maze-generating algorithm
+- 2022-12-19: Added Hunt and Kill, build process and begun creating unit tests
