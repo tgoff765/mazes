@@ -2,7 +2,7 @@ from typing import Dict, List, Union
 
 
 class Distances:
-    """
+    """ 
     Holds distances from a root (origin cell) to every other cell in the maze
     """
 
