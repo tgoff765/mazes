@@ -4,7 +4,7 @@ from maze_creator.core.distances import Distances
 
 class Cell:
     """
-    Represents an individual cell of our maze
+    Represent s an individual cell of our maze
     """
 
     # Each cell should know where it is in the maze
