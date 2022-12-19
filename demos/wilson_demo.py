@@ -1,4 +1,4 @@
-from mazes.core.maze import Maze, MazeType
+from maze_creator.core.maze import Maze, MazeType
 
 if __name__ == "__main__":
     maze = Maze(MazeType.WILSON, columns=40, rows=40)
