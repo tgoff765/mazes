@@ -3,7 +3,7 @@ from mazes.core.distances import Distances
 
 
 class Cell:
-    """
+    """ 
     Represents an individual cell of our maze
     """
 
