@@ -1,6 +1,6 @@
-from mazes.core.grid import DistanceGrid
+from maze_creator.core.grid import DistanceGrid
 from random import uniform
-from mazes.algos.mazebuilder import MazeBuilder
+from maze_creator.algos.mazebuilder import MazeBuilder
 
 
 class BinaryTree(MazeBuilder):
@@ -12,7 +12,7 @@ class BinaryTree(MazeBuilder):
         When we reach a cell we cannot link a side to (e.g. on the eastern edge of the grid there are no more eastern cells
         we can link), this algorithm will always open the other side.
 
-        Because of this rule, this algorithm creates mazes that have a bias towards NE direction and will always have
+        Because of this rule, this algorithm creates maze_creator that have a bias towards NE direction and will always have
         a completely linked eastern column and northern row (in default orientation)
         """
 

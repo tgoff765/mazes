@@ -1,6 +1,6 @@
-from mazes.core.grid import DistanceGrid
+from maze_creator.core.grid import DistanceGrid
 from random import choice
-from mazes.algos.mazebuilder import MazeBuilder
+from maze_creator.algos.mazebuilder import MazeBuilder
 
 
 class Wilson(MazeBuilder):

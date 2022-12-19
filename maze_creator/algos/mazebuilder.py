@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from mazes.core.grid import DistanceGrid
+from maze_creator.core.grid import DistanceGrid
 from PIL import Image
 
 

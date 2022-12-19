@@ -7,4 +7,3 @@ def test_no_neighbors():
     """
     test_cell = Cell(1, 1)
     assert len(test_cell.links()) == 0
-
