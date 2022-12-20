@@ -54,7 +54,7 @@ class Cell:
         Returns T/F if the other_cell is linked to this one
         """
 
-        return other_cell in self.neighboring_cells.keys()
+        return self.neighboring_cells.get(other_cell, False)
 
     def neighbors(self) -> List["Cell"]:
         """
