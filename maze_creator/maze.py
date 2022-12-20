@@ -1,10 +1,11 @@
 import textwrap
 
-from maze_creator.algos.mazebuilder import MazeBuilder
+from maze_creator.core.mazebuilder import MazeBuilder
 from maze_creator.algos.binarytree import BinaryTree
 from maze_creator.algos.sidewinder import SideWinder
 from maze_creator.algos.aldousbroder import AldousBroder
 from maze_creator.algos.huntandkill import HuntAndKill
+from maze_creator.algos.recursivebacktracker import RecursiveBackTracker
 from maze_creator.algos.wilson import Wilson
 from enum import Enum
 from maze_creator.core.grid import ColorGrid, DistanceGrid
@@ -17,6 +18,7 @@ class MazeType(Enum):
     ALDOUSBRODER = 3
     WILSON = 4
     HUNTANDKILL = 5
+    RECURSIVEBACKTRACKER = 6
 
 
 class Maze:
@@ -56,6 +58,7 @@ class Maze:
             MazeType.ALDOUSBRODER: AldousBroder,
             MazeType.WILSON: Wilson,
             MazeType.HUNTANDKILL: HuntAndKill,
+            MazeType.RECURSIVEBACKTRACKER: RecursiveBackTracker
         }
 
         self.maze_builder = maze_map.get(maze_type)(**kwargs)
