@@ -1,5 +1,5 @@
 from maze_creator.core.grid import DistanceGrid
-from maze_creator.algos.mazebuilder import MazeBuilder
+from maze_creator.core.mazebuilder import MazeBuilder
 from random import choice
 
 

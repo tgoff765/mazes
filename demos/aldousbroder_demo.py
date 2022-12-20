@@ -1,4 +1,4 @@
-from maze_creator.core.maze import Maze, MazeType
+from maze_creator.maze import Maze, MazeType
 
 if __name__ == "__main__":
     # Can create a maze and print ASCII representation
