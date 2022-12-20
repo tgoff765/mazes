@@ -58,7 +58,7 @@ class Maze:
             MazeType.ALDOUSBRODER: AldousBroder,
             MazeType.WILSON: Wilson,
             MazeType.HUNTANDKILL: HuntAndKill,
-            MazeType.RECURSIVEBACKTRACKER: RecursiveBackTracker
+            MazeType.RECURSIVEBACKTRACKER: RecursiveBackTracker,
         }
 
         self.maze_builder = maze_map.get(maze_type)(**kwargs)

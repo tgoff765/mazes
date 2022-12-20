@@ -12,6 +12,7 @@ class RecursiveBackTracker(MazeBuilder):
     Will produce mazes very similar to huntandkill, the trade-off is that this is more memory-intensive but faster
     since each cell is guaranteed to be visited exactly twice.
     """
+
     def create_maze(self, **kwargs) -> DistanceGrid:
         # Initialize the stack with random cell to start visiting on
         stack = [self.grid.random_cell()]
@@ -20,8 +21,8 @@ class RecursiveBackTracker(MazeBuilder):
             # Examine current item at the top of the stack and check to see if it has any unvisited neighbors
             current = stack[-1]
             unvisited_neighbors = list(
-                        filter(lambda n: len(n.links()) == 0, current.neighbors())
-                    )
+                filter(lambda n: len(n.links()) == 0, current.neighbors())
+            )
             # If there are no unvisited neighbors pop another cell of the stack, otherwise choose another
             # random unvisited neighbor to visit
             if len(unvisited_neighbors) == 0:
