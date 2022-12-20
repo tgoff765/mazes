@@ -10,5 +10,3 @@ def test_grid_setup():
 def test_grid_size():
     test_grid = Grid(2, 5)
     assert test_grid.size() == 10
-
-
