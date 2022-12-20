@@ -1,3 +1,5 @@
+import textwrap
+
 from maze_creator.algos.mazebuilder import MazeBuilder
 from maze_creator.algos.binarytree import BinaryTree
 from maze_creator.algos.sidewinder import SideWinder
@@ -59,7 +61,7 @@ class Maze:
         self.maze_builder = maze_map.get(maze_type)(**kwargs)
         self._create(**kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.maze.__str__()
 
     def _create(self, **kwargs) -> None:
@@ -72,11 +74,11 @@ class Maze:
         self.maze_image = self.maze_builder.draw_maze(**kwargs)
         self.maze_image.show()
 
-    def solve(self, **kwargs) -> DistanceGrid:
+    def solve(self, **kwargs) -> None:
         """
-        Return a string representation of the solved maze. Each time this is called a new path is generated.
+        Update the maze so that there's a shortest path from supplied start and end
         """
-        return self.maze_builder.solve(**kwargs)
+        self.maze_builder.solve(**kwargs)
 
     def analyze(self, **kwargs) -> None:
         """
@@ -87,3 +89,25 @@ class Maze:
             self.maze, kwargs.get("start_row", 0), kwargs.get("start_col", 0)
         ).draw(**kwargs)
         cg.show()
+
+    def stats(self) -> None:
+        """
+        Return some basic information of maze, for now just a pretty formatted string, but in future could be something
+        nicer?
+        """
+        nice_output = f"""
+        -----------------------------------------
+        Maze Stats:
+        Row Count = {self.maze.rows}
+        Column Count = {self.maze.columns}
+        Number of dead end spaces = {self.maze.count_number_of_dead_ends()}
+        % of grid spaces that are dead ends: {round(self.maze.count_number_of_dead_ends()/(self.maze.rows * self.maze.columns) * 100)}%
+        -----------------------------------------
+        """
+        print(textwrap.dedent(nice_output))
+
+    def reset(self) -> None:
+        """
+        Reset a maze back to its original state (removing any solutions)
+        """
+        self.maze_builder.reset()

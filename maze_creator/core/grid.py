@@ -124,6 +124,18 @@ class Grid:
             for cell in row:
                 yield cell
 
+    def count_number_of_dead_ends(self) -> int:
+        """
+        Returns the number of dead ends in a maze (i.e. those cells only connected to one other cell)
+        """
+        num_dead_ends = 0
+        for row in self.grid:
+            for cell in row:
+                if len(cell.links()) == 1:
+                    num_dead_ends += 1
+
+        return num_dead_ends
+
     def draw(self, **kwargs) -> Image:
         """
         Draw grid to canvas using the Pillow Library
@@ -263,6 +275,12 @@ class DistanceGrid(Grid):
         """
         if self.distances and self.distances.get_cell_distance(cell) is not None:
             return 200, 200, 200
+
+    def reset(self) -> None:
+        """
+        Reset distances to zero
+        """
+        self.distances = None
 
 
 class ColorGrid(Grid):
