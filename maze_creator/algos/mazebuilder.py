@@ -41,3 +41,9 @@ class MazeBuilder(ABC):
             kwargs.get("end_col", 0),
         )
         return self.grid
+
+    def reset(self) -> None:
+        """
+        Resets the distances recorded in grid
+        """
+        self.grid.reset()
