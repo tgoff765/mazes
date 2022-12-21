@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
-from maze_creator.core.grid import DistanceGrid
+
 from PIL import Image
+
+from maze_creator.core.grid import DistanceGrid
 
 
 class MazeBuilder(ABC):

@@ -1,4 +1,5 @@
 from typing import Dict, List
+
 from maze_creator.core.distances import Distances
 
 

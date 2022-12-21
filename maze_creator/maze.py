@@ -1,15 +1,16 @@
 import textwrap
+from enum import Enum
 
-from maze_creator.core.mazebuilder import MazeBuilder
-from maze_creator.algos.binarytree import BinaryTree
-from maze_creator.algos.sidewinder import SideWinder
+from PIL import Image
+
 from maze_creator.algos.aldousbroder import AldousBroder
+from maze_creator.algos.binarytree import BinaryTree
 from maze_creator.algos.huntandkill import HuntAndKill
 from maze_creator.algos.recursivebacktracker import RecursiveBackTracker
+from maze_creator.algos.sidewinder import SideWinder
 from maze_creator.algos.wilson import Wilson
-from enum import Enum
 from maze_creator.core.grid import ColorGrid, DistanceGrid
-from PIL import Image
+from maze_creator.core.mazebuilder import MazeBuilder
 
 
 class MazeType(Enum):

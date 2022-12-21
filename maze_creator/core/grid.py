@@ -1,8 +1,10 @@
-from typing import Generator, List, Union
 from random import randint
+from typing import Generator, List, Union
+
+from PIL import Image, ImageDraw
+
 from maze_creator.core.cells import Cell
 from maze_creator.core.distances import Distances
-from PIL import Image, ImageDraw
 
 
 class Grid:

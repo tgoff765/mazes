@@ -1,5 +1,6 @@
-from maze_creator.core.grid import DistanceGrid
 from random import uniform
+
+from maze_creator.core.grid import DistanceGrid
 from maze_creator.core.mazebuilder import MazeBuilder
 
 

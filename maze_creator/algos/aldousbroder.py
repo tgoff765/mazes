@@ -1,6 +1,7 @@
+from random import choice
+
 from maze_creator.core.grid import DistanceGrid
 from maze_creator.core.mazebuilder import MazeBuilder
-from random import choice
 
 
 class AldousBroder(MazeBuilder):
