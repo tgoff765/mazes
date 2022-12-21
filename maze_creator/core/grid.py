@@ -1,3 +1,4 @@
+from enum import Enum
 from random import randint
 from typing import Generator, List, Union
 
@@ -5,6 +6,11 @@ from PIL import Image, ImageDraw
 
 from maze_creator.core.cells import Cell
 from maze_creator.core.distances import Distances
+
+
+class AnalysisMode(Enum):
+    DISTANCE = 1
+    OPENINGS = 2
 
 
 class Grid:
@@ -138,6 +144,48 @@ class Grid:
 
         return num_dead_ends
 
+    def count_number_of_4_ways(self) -> int:
+        """
+        Count number of passages that have all 4 connections opened
+        """
+        num_4_ways_ends = 0
+        for row in self.grid:
+            for cell in row:
+                if len(cell.links()) == 4:
+                    num_4_ways_ends += 1
+
+        return num_4_ways_ends
+
+    def count_num_vertical_passages(self) -> int:
+        """
+        Return the number of vertical passages (i.e. cells that only have a west and east neighbor)
+        """
+        num_vertical_passages = 0
+        for row in self.grid:
+            for cell in row:
+                if (
+                    len(cell.links()) == 2
+                    and cell.east is not None
+                    and cell.west is not None
+                ):
+                    num_vertical_passages += 1
+        return num_vertical_passages
+
+    def count_num_horizontal_passages(self) -> int:
+        """
+        Return the number of horizontal passages (i.e. cells that only have a north and south neighbor)
+        """
+        num_horizontal_passages = 0
+        for row in self.grid:
+            for cell in row:
+                if (
+                    len(cell.links()) == 2
+                    and cell.north is not None
+                    and cell.south is not None
+                ):
+                    num_horizontal_passages += 1
+        return num_horizontal_passages
+
     def draw(self, **kwargs) -> Image:
         """
         Draw grid to canvas using the Pillow Library
@@ -227,10 +275,15 @@ class DistanceGrid(Grid):
     Subclass of grid that calculates distances from a root node using Dijkstra's method given an already configured grid
     """
 
-    distances: Distances
+    distances: Union[Distances, None]
     rows: int
     columns: int
     grid: List[List["Cell"]]
+    starting_cell_row: Union[int, None]
+    starting_cell_column: Union[int, None]
+    ending_cell_row: Union[int, None]
+    ending_cell_column: Union[int, None]
+    path_distance = Union[int, None]
 
     def __init__(self, rows, columns):
         super().__init__(rows, columns)
@@ -249,17 +302,23 @@ class DistanceGrid(Grid):
         starting_cell_row,
         starting_cell_column,
         ending_cell_row,
-        ending_row_column,
+        ending_cell_column,
     ):
         """
         Set the distance grid to hold the distances representing the shortest path from a starting and ending cell
         """
+        # Store variables
+        self.starting_cell_row = starting_cell_row
+        self.starting_cell_column = starting_cell_column
+        self.ending_cell_row = ending_cell_row
+        self.ending_cell_column = ending_cell_column
         # Calc distances from a starting point
         self.calc_distances(starting_cell_row, starting_cell_column)
         # Calc shortest path from start to end then update distances member variable
-        ending_cell = self.grid[ending_cell_row][ending_row_column]
+        ending_cell = self.grid[ending_cell_row][ending_cell_column]
         shortest_path = self.distances.path_to(ending_cell)
         self.distances = shortest_path
+        self.path_distance = self.distances.get_cell_distance(ending_cell)
 
     def contents_of_cell(self, cell) -> str:
         """
@@ -283,11 +342,16 @@ class DistanceGrid(Grid):
         Reset distances to zero
         """
         self.distances = None
+        self.starting_cell_row = None
+        self.starting_cell_column = None
+        self.ending_cell_row = None
+        self.ending_cell_column = None
+        self.path_distance = None
 
 
 class ColorGrid(Grid):
     """
-    Given a grid and cell coordinates, colors all cells according to their distance from the starting cell
+    Given a grid and cell coordinates, colors all cells according certain analysis modes
     """
 
     grid: List[List["Cell"]]
@@ -296,13 +360,15 @@ class ColorGrid(Grid):
     max: int
     columns: int
     rows: int
+    mode: AnalysisMode
 
-    def __init__(self, grid, cell_row, cell_column):
+    def __init__(self, grid, cell_row, cell_column, mode):
         self.grid = grid.grid
         self.rows = grid.rows
         self.columns = grid.columns
         self.cell = grid.grid[cell_row][cell_column]
         self._distances(self.cell)
+        self.mode = mode
 
     def _distances(self, cell) -> None:
         """
@@ -316,8 +382,20 @@ class ColorGrid(Grid):
         """
         Color in each cell at a given intensity depending on how far it is from the supplied cell
         """
-        distance = self.distances.get_cell_distance(cell)
-        intensity = (self.max - distance) / self.max
-        dark = 255 * intensity
-        bright = 128 + (127 * intensity)
-        return int(intensity), int(dark), int(bright)
+        # Color by distance from origin cell
+        if self.mode == AnalysisMode.DISTANCE:
+            distance = self.distances.get_cell_distance(cell)
+            intensity = (self.max - distance) / self.max
+            dark = 255 * intensity
+            bright = 128 + (127 * intensity)
+            return int(intensity), int(dark), int(bright)
+        # Color by number of openings
+        else:
+            num_of_neighbors = len(cell.links())
+            openings_color_map = {
+                4: (0, 204, 0),
+                3: (51, 255, 51),
+                2: (153, 255, 153),
+                1: (255, 255, 255),
+            }
+            return openings_color_map.get(num_of_neighbors, 1)

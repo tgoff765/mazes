@@ -9,7 +9,7 @@ from maze_creator.algos.huntandkill import HuntAndKill
 from maze_creator.algos.recursivebacktracker import RecursiveBackTracker
 from maze_creator.algos.sidewinder import SideWinder
 from maze_creator.algos.wilson import Wilson
-from maze_creator.core.grid import ColorGrid, DistanceGrid
+from maze_creator.core.grid import AnalysisMode, ColorGrid, DistanceGrid
 from maze_creator.core.mazebuilder import MazeBuilder
 
 
@@ -84,13 +84,22 @@ class Maze:
         """
         self.maze_builder.solve(**kwargs)
 
-    def analyze(self, **kwargs) -> None:
+    def analyze(self, mode="distance", **kwargs) -> None:
         """
         Returns a colorgrid which when drawn colors in cells by how far in distance they are from the target cell
         Note: This does not edit the maze object, it returns a seperate view
         """
+
+        mode_map = {
+            "distance": AnalysisMode.DISTANCE,
+            "openings": AnalysisMode.OPENINGS,
+        }
+
         cg = ColorGrid(
-            self.maze, kwargs.get("start_row", 0), kwargs.get("start_col", 0)
+            self.maze,
+            kwargs.get("start_row", 0),
+            kwargs.get("start_col", 0),
+            mode_map.get(mode, AnalysisMode.DISTANCE),
         ).draw(**kwargs)
         cg.show()
 
@@ -102,10 +111,29 @@ class Maze:
         nice_output = f"""
         -----------------------------------------
         Maze Stats:
+        
+        | Summary | 
+        Total Space Count = {self.maze.rows * self.maze.columns}
         Row Count = {self.maze.rows}
         Column Count = {self.maze.columns}
+        
+        | Counts and Rations | 
         Number of dead end spaces = {self.maze.count_number_of_dead_ends()}
-        % of grid spaces that are dead ends: {round(self.maze.count_number_of_dead_ends()/(self.maze.rows * self.maze.columns) * 100)}%
+        Number of 4-way passages = {self.maze.count_number_of_4_ways()}
+        Number of vertical passages = {self.maze.count_num_vertical_passages()}
+        Number of horizontal passages = {self.maze.count_num_horizontal_passages()}
+        Ratio of vertical/horizontal passages = {round(self.maze.count_num_vertical_passages()/self.maze.count_num_horizontal_passages(), 2)}
+        
+        | Percentages |
+        % of grid spaces that are dead ends = {round(self.maze.count_number_of_dead_ends()/(self.maze.rows * self.maze.columns) * 100, 2)}%
+        % of grid spaces that are 4-way passages = {round(self.maze.count_number_of_4_ways()/(self.maze.rows * self.maze.columns) * 100, 2)}%
+        % of grid spaces that are vertical passages = {round(self.maze.count_num_vertical_passages()/(self.maze.rows * self.maze.columns) * 100, 2)}%      
+        % of grid spaces that are horizontal passages = {round(self.maze.count_num_horizontal_passages()/(self.maze.rows * self.maze.columns) * 100, 2)}%
+        
+        | Solution (if applicable) |
+        Start Coordinates (row, col) = ({self.maze.starting_cell_row, self.maze.starting_cell_column})
+        End Coordinates(row, col) = ({self.maze.ending_cell_row, self.maze.ending_cell_column})
+        Path Length: {self.maze.path_distance}
         -----------------------------------------
         """
         print(textwrap.dedent(nice_output))
