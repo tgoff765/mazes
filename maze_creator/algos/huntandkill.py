@@ -1,8 +1,8 @@
+from random import choice
 from typing import Union
 
 from maze_creator.core.cells import Cell
 from maze_creator.core.grid import DistanceGrid
-from random import choice
 from maze_creator.core.mazebuilder import MazeBuilder
 
 
