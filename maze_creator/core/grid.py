@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 
 from maze_creator.core.cells import Cell
 from maze_creator.core.distances import Distances
+from maze_creator.core.mask import Mask
 
 
 class AnalysisMode(Enum):
@@ -68,11 +69,17 @@ class Grid:
                 # Every cell is three spaces wide
                 body = f" {self.contents_of_cell(cell)} "
                 # If the cell is linked to the east add a space (open passage) otherwise add a pipe to represent wall
-                east_boundary = " " if cell.is_linked(cell.east) else "|"
+                east_boundary = (
+                    " " if isinstance(cell, Cell) and cell.is_linked(cell.east) else "|"
+                )
                 top += body + east_boundary
                 # If the cell is linked to the south add three spaces (open passage)
                 # otherwise add vertical bars for wall
-                south_boundary = "   " if cell.is_linked(cell.south) else "---"
+                south_boundary = (
+                    "   "
+                    if isinstance(cell, Cell) and cell.is_linked(cell.south)
+                    else "---"
+                )
                 corner = "+"
                 bottom += south_boundary + corner
 
@@ -97,13 +104,14 @@ class Grid:
         """
         for row in self.grid:
             for c in row:
-                row, column = c.row, c.column
+                if c is not None:
+                    row, column = c.row, c.column
 
-                # See __getitem__ for details on how this is implemented
-                c.north = self[row - 1, column]
-                c.south = self[row + 1, column]
-                c.east = self[row, column + 1]
-                c.west = self[row, column - 1]
+                    # See __getitem__ for details on how this is implemented
+                    c.north = self[row - 1, column]
+                    c.south = self[row + 1, column]
+                    c.east = self[row, column + 1]
+                    c.west = self[row, column - 1]
 
     def random_cell(self) -> "Cell":
         """
@@ -130,7 +138,8 @@ class Grid:
         """
         for row in self.grid:
             for cell in row:
-                yield cell
+                if isinstance(cell, Cell):
+                    yield cell
 
     def count_number_of_dead_ends(self) -> int:
         """
@@ -399,3 +408,41 @@ class ColorGrid(Grid):
                 1: (255, 255, 255),
             }
             return openings_color_map.get(num_of_neighbors, 1)
+
+
+class MaskedGrid(Grid):
+    mask: Mask
+
+    def __init__(self, mask):
+        """
+        Create a new grid using our supplied mask
+        """
+        self.mask = mask
+        super().__init__(mask.rows, mask.columns)
+
+    def prepare_grid(self) -> None:
+        """
+        Same as prepare_grid in Grid class, except we only add a cell if its marked as unmasked in our mask bit array
+        """
+        self.grid = [
+            [
+                Cell(row, column) if self.mask[row, column] else None
+                for column in range(self.columns)
+            ]
+            for row in range(self.rows)
+        ]
+
+    def random_cell(self) -> "Cell":
+        row, col = self.mask.random_location()
+        return self.grid[row][col]
+
+    def size(self) -> int:
+        return self.mask.count()
+
+
+if __name__ == "__main__":
+    test_mask = Mask(5, 5)
+    test_mask[0, 0] = False
+    test_mask[4, 4] = False
+    test = MaskedGrid(test_mask)
+    print(test)
