@@ -5,8 +5,8 @@ from algos.huntandkill import HuntAndKill
 from algos.recursivebacktracker import RecursiveBackTracker
 from algos.sidewinder import SideWinder
 from algos.wilson import Wilson
-from maze_creator.Views.path_finder_view import PathFinderView
-from maze_creator.Views.distances_view import DistancesView
+from maze_creator.views.path_finder_view import PathFinderView
+from maze_creator.views.distances_view import DistancesView
 from visuals.maze_image_creator import MazeImageCreator
 
 
