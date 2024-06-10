@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "mazes"
+version = "0.1.0"
+description = ""
+authors = ["Tyler Goff"]
+readme = "README.md"
+packages = [{include = "maze_creator"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pillow = "^9.3.0"
+
+[tool.poetry.dev-dependencies]
+black = "*"
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 90

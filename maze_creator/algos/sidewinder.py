@@ -1,11 +1,11 @@
 from random import choice, uniform
 
-from maze_creator.core.grid import DistanceGrid
-from maze_creator.core.mazebuilder import MazeBuilder
+from maze_creator.core.grid import Grid
 
 
-class SideWinder(MazeBuilder):
-    def create_maze(self, **kwargs) -> DistanceGrid:
+class SideWinder:
+    @staticmethod
+    def create_maze(grid, horizontal_bias: float = 0.5) -> Grid:
         """
         Visit every cell in the gird and attach the eastern cell so long as the random number generated falls below the
         bias. After we hit our first miss, we have created a "run" (aka a group) of cells and then must pick a northern
@@ -20,7 +20,8 @@ class SideWinder(MazeBuilder):
         of the maze looking for the northern cell connection since at the very least every row must be connected to
         its neighboring top row by at least one cell.
         """
-        for row in self.grid.each_row():
+
+        for row in grid.each_row():
             # Create an empty run for each row
             run = []
 
@@ -32,8 +33,7 @@ class SideWinder(MazeBuilder):
                 # Close out the current run of we're at eastern_boundary or not at north and our random number
                 # flipped tells us to
                 should_close_out = at_eastern_boundary or (
-                    not at_northern_boundary
-                    and kwargs.get("horizontal_bias", 0.5) < uniform(0, 1)
+                    not at_northern_boundary and horizontal_bias < uniform(0, 1)
                 )
 
                 if should_close_out:
@@ -48,4 +48,4 @@ class SideWinder(MazeBuilder):
                 else:
                     # If we're still within a run just link current cell to its eastern neighbor
                     cell.link(cell.east)
-        return self.grid
+        return grid

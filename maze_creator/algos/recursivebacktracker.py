@@ -1,10 +1,9 @@
 from random import choice
 
-from maze_creator.core.grid import DistanceGrid
-from maze_creator.core.mazebuilder import MazeBuilder
+from maze_creator.core.grid import Grid
 
 
-class RecursiveBackTracker(MazeBuilder):
+class RecursiveBackTracker:
     """
     Visit random cells in a maze, pushing each cell onto a stack until we reach a cell that has no unvisited neighbors.
     We then pop cells off the maze (aka backtrack) until we can find an unvisited neighbor and proceed making a path.
@@ -14,9 +13,10 @@ class RecursiveBackTracker(MazeBuilder):
     since each cell is guaranteed to be visited exactly twice.
     """
 
-    def create_maze(self, **kwargs) -> DistanceGrid:
+    @staticmethod
+    def create_maze(grid) -> Grid:
         # Initialize the stack with random cell to start visiting on
-        stack = [self.grid.random_cell()]
+        stack = [grid.random_cell()]
 
         while len(stack) > 0:
             # Examine current item at the top of the stack and check to see if it has any unvisited neighbors
@@ -33,4 +33,4 @@ class RecursiveBackTracker(MazeBuilder):
                 current.link(neighbor)
                 stack.append(neighbor)
 
-        return self.grid
+        return grid

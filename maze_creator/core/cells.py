@@ -1,15 +1,12 @@
 from typing import Dict, List
 
-from maze_creator.core.distances import Distances
-
 
 class Cell:
     """
-    Represents an individual cell of our maze
+    Cells represent an individual tile in a maze. Cells know about their neighbors and are optionally linked
+    to each of their neighbors (i.e. there's a passage between them).
     """
 
-    # Each cell should know where it is in the maze
-    # Track what other cells are connected to this cell, as well as which cells lie N/E/S/W of it
     row: int
     column: int
     north: "Cell"
@@ -22,6 +19,9 @@ class Cell:
         self.row = row
         self.column = column
         self.neighboring_cells = {}
+
+    def __str__(self) -> str:
+        return f"Cell @ [row:{self.row}, col:{self.column}]"
 
     def link(self, cell_to_link: "Cell", bidi: bool = True) -> None:
         """
@@ -72,35 +72,3 @@ class Cell:
             neighbors.append(self.west)
 
         return neighbors
-
-    def distances(self) -> "Distances":
-        """
-        Calculate the distances to each of the other cells in the grid from the current cell
-        """
-        # Create a new distances class starting with this cell
-        distances = Distances(self)
-        # Keep track of all the cells we want to visit and record the distance too, starting with this cell
-        frontier = [self]
-
-        while frontier:
-            # List to hold the cells we'll consider on the next pass
-            new_frontier = []
-
-            # For every cell in the frontier and every linked cell for every cell..
-            for cell in frontier:
-                for linked_cell in cell.links():
-                    # Check if we've already visited a cell, if we have continue
-                    if distances.get_cell_distance(linked_cell) is not None:
-                        continue
-                    # Otherwise set cell distance to that unvistied cell as one more than the distance
-                    # to the cell we're currently visiting
-                    distances.set_cell_distance(
-                        linked_cell, distances.get_cell_distance(cell) + 1
-                    )
-                    # Add linked_cell to visit on next pass
-                    new_frontier.append(linked_cell)
-
-            # Update frontier before next pass
-            frontier = new_frontier
-
-        return distances

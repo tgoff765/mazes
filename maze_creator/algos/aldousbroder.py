@@ -1,21 +1,22 @@
+from abc import ABC, abstractmethod
 from random import choice
 
-from maze_creator.core.grid import DistanceGrid
-from maze_creator.core.mazebuilder import MazeBuilder
+from maze_creator.core.grid import Grid
 
 
-class AldousBroder(MazeBuilder):
-    def create_maze(self, **kwargs) -> DistanceGrid:
+class AldousBroder(ABC):
+    @staticmethod
+    def create_maze(grid) -> Grid:
         """
         Random walk algorithm, start with a random cell,
         pick a random neighbor and if it hasn't already been
         visited link it with the previous cell.
         """
         # Start on a random cell
-        cell = self.grid.random_cell()
+        cell = grid.random_cell()
         # Calculate the number of cells left unvisited
         # (subtract 1 since we consider starting grid as already visited)
-        unvisited = self.grid.size() - 1
+        unvisited = grid.size() - 1
 
         while unvisited > 0:
             # Pick a random neighbor of current cel
@@ -29,4 +30,4 @@ class AldousBroder(MazeBuilder):
 
             cell = neighbor
 
-        return self.grid
+        return grid

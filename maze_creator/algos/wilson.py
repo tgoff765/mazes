@@ -1,11 +1,11 @@
 from random import choice
 
-from maze_creator.core.grid import DistanceGrid
-from maze_creator.core.mazebuilder import MazeBuilder
+from maze_creator.core.grid import Grid
 
 
-class Wilson(MazeBuilder):
-    def create_maze(self, **kwargs) -> DistanceGrid:
+class Wilson:
+    @staticmethod
+    def create_maze(grid) -> Grid:
         """
         Generate a maze by marking a cell visited, then visiting a random path in the maze. We erase and loops our
         path may create and once we find a visited cell we carve a path to it. Note that algorithm is unbiased like
@@ -14,7 +14,7 @@ class Wilson(MazeBuilder):
         cells become visited (hence making it easier to carve paths).
         """
         # Initialize a list of unvisited cells from the grid
-        unvisited = [cell for cell in self.grid.each_cell()]
+        unvisited = [cell for cell in grid.each_cell()]
 
         # Pick a random cell from the list and mark it visited by deleting from list
         first = choice(unvisited)
@@ -46,4 +46,4 @@ class Wilson(MazeBuilder):
                 path[i].link(path[i + 1])
                 unvisited.remove(path[i])
 
-        return self.grid
+        return grid
