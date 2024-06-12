@@ -4,7 +4,6 @@ from maze_creator.core.cells import Cell
 from maze_creator.core.distances import Distances
 
 
-# Could this be broken out into 2 sepearte classes?
 class DistancesView:
     """
     Given a grid and cell coordinates, colors all cells according how far they are from the starting cell

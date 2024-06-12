@@ -4,6 +4,7 @@ from maze_creator.core.cells import Cell
 from maze_creator.core.distances import Distances
 
 
+# Views are applied on top of existing mazes
 class PathFinderView:
     """
     Find the path between two different cells in a maze

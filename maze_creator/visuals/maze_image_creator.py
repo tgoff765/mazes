@@ -16,6 +16,8 @@ class MazeImageCreator:
         """
         Pick what the background color for each cell should be in the image
         """
+        if cell is None:
+            return 255, 255, 255
         if self.type == "bw":
             return None
         elif self.type == "path":
@@ -81,7 +83,7 @@ class MazeImageCreator:
 
                     if mode == "backgrounds":
                         color = self.background_color_for(cell)
-                        if color:
+                        if color and cell is not None:
 
                             western_boundary = x1
                             eastern_boundary = x2

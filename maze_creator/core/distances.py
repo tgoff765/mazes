@@ -28,6 +28,9 @@ class Distances:
 
             # For every cell in the frontier and every linked cell for every cell..
             for cell in frontier:
+                # Skip blocked off cells
+                if cell is None:
+                    continue
                 for linked_cell in cell.links():
                     # Check if we've already visited a cell, if we have continue
                     if self.get_cell_distance(linked_cell) is not None:
@@ -81,6 +84,8 @@ class Distances:
         Use Dijkstra's algorithm to find a path from root to goal. Returns a distances mapping representing the
         shortest path to the goal
         """
+        if goal is None:
+            raise Exception("Cell doesn't exist or is blocked off")
         current = goal
         # Create a new distances object from root
         breadcrumbs = Distances(self.root)
