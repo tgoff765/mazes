@@ -3,9 +3,10 @@ from maze_creator.core.mask import Mask
 from maze_creator.grids.masked_grid import MaskedGrid
 from maze_creator.views.distances_view import DistancesView
 from maze_creator.views.path_finder_view import PathFinderView
-from maze_creator.visuals.maze_image_creator import MazeImageCreator
+from maze_creator.visuals.maze_image_creator import MazeImageCreator, ColorChoice
 
 
+# TODO: Combine this with Maze class and determine which algorithms still work with masking
 class MaskedMaze:
 
     def __init__(self, mask, type):
@@ -30,15 +31,8 @@ if __name__ == "__main__":
     og = MazeImageCreator(test)
     og.draw()
 
-    path_view = PathFinderView(test, 0, 0, 19, 19)
-    image = MazeImageCreator(maze=path_view, type="path")
-    image.draw()
-
     distances_view = DistancesView(test, 19, 19)
-    image2 = MazeImageCreator(distances_view, "distance")
+    image2 = MazeImageCreator(
+        distances_view, "distance", color_choice=ColorChoice.DARKGREEN
+    )
     image2.draw()
-
-    image3 = MazeImageCreator(test, "openings")
-    image3.draw()
-
-

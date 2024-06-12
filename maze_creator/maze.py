@@ -7,7 +7,7 @@ from algos.sidewinder import SideWinder
 from algos.wilson import Wilson
 from maze_creator.views.path_finder_view import PathFinderView
 from maze_creator.views.distances_view import DistancesView
-from visuals.maze_image_creator import MazeImageCreator
+from visuals.maze_image_creator import MazeImageCreator, ColorChoice
 
 
 class Maze:
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     image.draw()
 
     distances_view = DistancesView(maze, 0, 40)
-    image2 = MazeImageCreator(distances_view, "distance")
+    image2 = MazeImageCreator(distances_view, "distance", ColorChoice.YELLOW)
     image2.draw(canvas_color=(124, 64, 12))
 
     image3 = MazeImageCreator(maze, "openings")

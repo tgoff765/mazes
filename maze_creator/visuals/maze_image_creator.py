@@ -1,23 +1,33 @@
 from PIL import Image, ImageDraw, ImageOps
 
 
+class ColorChoice:
+    BLUE = 1
+    DARKGREEN = 2
+    PURPLE = 3
+    GREEN = 4
+    RED = 5
+    YELLOW = 6
+
+
 # TODO: Need to figure out a class hierarchy that can deal with this
 class MazeImageCreator:
     """
     Given some grid, create a nice image of it
     """
 
-    def __init__(self, maze, type="bw"):
+    def __init__(self, maze, type="bw", color_choice: ColorChoice = ColorChoice.BLUE):
         self.maze = maze
         self.grid = maze.grid
         self.type = type
+        self.color_choice = color_choice
 
-    def background_color_for(self, cell):
+    def background_color_for(self, cell, canvas_color, color_choice):
         """
         Pick what the background color for each cell should be in the image
         """
         if cell is None:
-            return 255, 255, 255
+            return canvas_color
         if self.type == "bw":
             return None
         elif self.type == "path":
@@ -28,7 +38,19 @@ class MazeImageCreator:
             intensity = (self.maze.max - distance) / self.maze.max
             dark = 255 * intensity
             bright = 128 + (127 * intensity)
-            return int(intensity), int(dark), int(bright)
+            # We can vary these
+            if color_choice == ColorChoice.BLUE:
+                return int(intensity), int(dark), int(bright)
+            elif color_choice == ColorChoice.DARKGREEN:
+                return int(intensity), int(bright), int(dark)
+            elif color_choice == ColorChoice.PURPLE:
+                return int(dark), int(intensity), int(bright)
+            elif color_choice == ColorChoice.GREEN:
+                return int(dark), int(bright), int(intensity)
+            elif color_choice == ColorChoice.RED:
+                return int(bright), int(intensity), int(dark)
+            elif color_choice == ColorChoice.YELLOW:
+                return int(bright), int(dark), int(intensity)
         # Color by number of openings
         elif self.type == "openings":
             num_of_neighbors = len(cell.links())
@@ -82,7 +104,9 @@ class MazeImageCreator:
                         y2 = (cell.row + 1) * cell_size
 
                     if mode == "backgrounds":
-                        color = self.background_color_for(cell)
+                        color = self.background_color_for(
+                            cell, canvas_color, self.color_choice
+                        )
                         if color and cell is not None:
 
                             western_boundary = x1
