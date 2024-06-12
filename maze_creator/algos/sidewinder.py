@@ -1,6 +1,6 @@
 from random import choice, uniform
 
-from maze_creator.core.grid import Grid
+from maze_creator.grids.grid import Grid
 
 
 class SideWinder:

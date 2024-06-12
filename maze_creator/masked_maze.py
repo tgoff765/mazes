@@ -1,6 +1,6 @@
 from maze_creator.algos.recursivebacktracker import RecursiveBackTracker
-from maze_creator.masks.mask import Mask
-from maze_creator.masks.masked_grid import MaskedGrid
+from maze_creator.core.mask import Mask
+from maze_creator.grids.masked_grid import MaskedGrid
 from maze_creator.visuals.maze_image_creator import MazeImageCreator
 
 
@@ -19,10 +19,11 @@ class MaskedMaze:
 
 
 if __name__ == "__main__":
-    mask = Mask(10, 10)
-    mask.bits[0][2] = False
-    mask.bits[0][9] = False
-    mask.bits[5][5] = False
+    mask = Mask(20, 20)
+    mask.bits[0][0] = False
+    mask.bits[1][1] = False
+    mask.bits[2][2] = False
+    mask.bits[3][3] = False
 
     test = MaskedMaze(mask, "Recursive")
     og = MazeImageCreator(test)

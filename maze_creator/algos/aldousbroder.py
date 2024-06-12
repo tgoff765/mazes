@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from random import choice
 
-from maze_creator.core.grid import Grid
+from maze_creator.grids.grid import Grid
 
 
 class AldousBroder(ABC):

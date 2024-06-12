@@ -16,6 +16,7 @@ class TestDistances(unittest.TestCase):
         cell3.link(cell2)
         cell4.link(cell3)
         distances = Distances(self.cell)
+        distances.calc_distances()
 
         expected = 3
         actual = distances.get_cell_distance(cell4)
@@ -29,6 +30,7 @@ class TestDistances(unittest.TestCase):
         cell3.link(cell2)
         cell4.link(cell3)
         distances = Distances(self.cell)
+        distances.calc_distances()
 
         expected = 3
         actual = distances.get_cell_distance(cell4)
@@ -46,6 +48,7 @@ class TestDistances(unittest.TestCase):
         cell5.link(cell4)
 
         distances = Distances(self.cell)
+        distances.calc_distances()
 
         expected = 3
         actual = distances.get_cell_distance(cell5)

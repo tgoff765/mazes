@@ -1,4 +1,4 @@
-from core.grid import Grid
+from maze_creator.grids.grid import Grid
 from algos.aldousbroder import AldousBroder
 from algos.binarytree import BinaryTree
 from algos.huntandkill import HuntAndKill
@@ -23,19 +23,22 @@ class Maze:
         horizontal_bias: float = 0.5,
     ):
         self.grid = Grid(rows, columns)
+        self.type = type.lower()
 
-        if type == "Aldous":
+        if self.type == "aldous":
             self.grid = AldousBroder.create_maze(self.grid)
-        elif type == "Binary":
+        elif self.type == "binary":
             self.grid = BinaryTree.create_maze(self.grid, horizontal_bias)
-        elif type == "Hunt":
+        elif self.type == "hunt":
             self.grid = HuntAndKill.create_maze(self.grid)
-        elif type == "Recursive":
+        elif self.type == "recursive":
             self.grid = RecursiveBackTracker.create_maze(self.grid)
-        elif type == "Side":
+        elif self.type == "side":
             self.grid = SideWinder.create_maze(self.grid, horizontal_bias)
-        else:
+        elif self.type == "wilson":
             self.grid = Wilson.create_maze(self.grid)
+        else:
+            raise Exception("Maze type not recognized")
 
     def __str__(self):
         return self.grid.__str__()

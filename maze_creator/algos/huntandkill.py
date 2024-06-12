@@ -2,7 +2,7 @@ from random import choice
 from typing import Union
 
 from maze_creator.core.cells import Cell
-from maze_creator.core.grid import Grid
+from maze_creator.grids.grid import Grid
 
 
 class HuntAndKill:

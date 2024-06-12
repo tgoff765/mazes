@@ -1,8 +1,6 @@
 from random import randint
 from typing import Union
 
-from maze_creator.core.grid import Grid
-
 
 class Mask:
 
@@ -17,8 +15,9 @@ class Mask:
         """
         count = 0
         for rows in self.bits:
-            for _ in rows:
-                count += 1
+            for bool in rows:
+                if bool:
+                    count += 1
 
         return count
 
@@ -43,10 +42,3 @@ class Mask:
         if 0 <= y <= (self.rows - 1) and 0 <= x <= (self.columns - 1):
             return self.bits[y][x]
         return None
-
-
-if __name__ == "__main__":
-    test = Mask(4, 4)
-    test.bits[0][0] = False
-    test.bits[1][1] = False
-    print(test.random_location())

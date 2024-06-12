@@ -1,5 +1,5 @@
 import unittest
-from maze_creator.core.grid import Grid
+from maze_creator.grids.grid import Grid
 
 
 class TestGrids(unittest.TestCase):

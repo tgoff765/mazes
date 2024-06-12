@@ -1,7 +1,7 @@
 from maze_creator.algos.recursivebacktracker import RecursiveBackTracker
 from maze_creator.core.cells import Cell
-from maze_creator.core.grid import Grid
-from maze_creator.masks.mask import Mask
+from maze_creator.grids.grid import Grid
+from maze_creator.core.mask import Mask
 
 
 class MaskedGrid(Grid):
