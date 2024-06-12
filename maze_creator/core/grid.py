@@ -1,13 +1,7 @@
 from random import randint
 from typing import Generator, List, Union
 
-
 from maze_creator.core.cells import Cell
-
-
-# class AnalysisMode(Enum):
-#     DISTANCE = 1
-#     OPENINGS = 2
 
 
 class Grid:
@@ -24,6 +18,7 @@ class Grid:
         self.rows = rows
         self.columns = columns
         self._prepare_grid()
+        self._configure_cells()
 
     def contents_of_cell(self, cell) -> str:
         """
@@ -45,10 +40,6 @@ class Grid:
             bottom = "+"  # Start of the southern border
 
             for cell in row:
-                # Skip cells that are masked
-                if cell is None:
-                    continue
-
                 # Every cell is three spaces wide
                 body = f" {self.contents_of_cell(cell)} "
                 # If the cell is linked to the east add a space (open passage) otherwise add a pipe to represent wall
@@ -97,6 +88,8 @@ class Grid:
             for row in range(self.rows)
         ]
 
+    def _configure_cells(self):
+
         for row in self.grid:
             for c in row:
                 if c is not None:
@@ -138,147 +131,7 @@ class Grid:
                 if isinstance(cell, Cell):
                     yield cell
 
-    # # Analysis (this should go in own class!)
-    # def count_number_of_dead_ends(self) -> int:
-    #     """
-    #     Returns the number of dead ends in a maze (i.e. those cells only connected to one other cell)
-    #     """
-    #     num_dead_ends = 0
-    #     for row in self.grid:
-    #         for cell in row:
-    #             if len(cell.links()) == 1:
-    #                 num_dead_ends += 1
-    #
-    #     return num_dead_ends
-    #
-    # def count_number_of_4_ways(self) -> int:
-    #     """
-    #     Count number of passages that have all 4 connections opened
-    #     """
-    #     num_4_ways_ends = 0
-    #     for row in self.grid:
-    #         for cell in row:
-    #             if len(cell.links()) == 4:
-    #                 num_4_ways_ends += 1
-    #
-    #     return num_4_ways_ends
-    #
-    # def count_num_vertical_passages(self) -> int:
-    #     """
-    #     Return the number of vertical passages (i.e. cells that only have a west and east neighbor)
-    #     """
-    #     num_vertical_passages = 0
-    #     for row in self.grid:
-    #         for cell in row:
-    #             if (
-    #                 len(cell.links()) == 2
-    #                 and cell.east is not None
-    #                 and cell.west is not None
-    #             ):
-    #                 num_vertical_passages += 1
-    #     return num_vertical_passages
-    #
-    # def count_num_horizontal_passages(self) -> int:
-    #     """
-    #     Return the number of horizontal passages (i.e. cells that only have a north and south neighbor)
-    #     """
-    #     num_horizontal_passages = 0
-    #     for row in self.grid:
-    #         for cell in row:
-    #             if (
-    #                 len(cell.links()) == 2
-    #                 and cell.north is not None
-    #                 and cell.south is not None
-    #             ):
-    #                 num_horizontal_passages += 1
-    #     return num_horizontal_passages
-    #
-    # # DRAWER (this should go in own class!)
-    # def background_color_for(self, cell) -> None:
-    #     """
-    #     Pick what the background color for each cell should be in the image
-    #     """
-    #     return None
-    #
-    # def draw(self, **kwargs) -> Image:
-    #     """
-    #     Draw grid to canvas using the Pillow Library
-    #     Note that a weakness of this rendering is that line width is drawn inside cells (instead of as a seperate grid)
-    #     which means that if line_width is large enough it'll draw over the cell.
-    #     In a future edit will need to disentangle the gridlines and the cells.
-    #     In general, I'd recommend keeping line_thickness 10% the size of cell_size or less.
-    #     """
-    #     # Given supplied cell size in pixels construct the image canvas
-    #     # Set parameters
-    #     cell_size = kwargs.get("cell_size", 100)
-    #     canvas_color = kwargs.get("canvas_color", (255, 255, 255))
-    #     line_color = kwargs.get("line_color", (0, 0, 0))
-    #     line_thickness = kwargs.get("line_thickness", 10)
-    #
-    #     img_width = cell_size * self.columns
-    #     img_height = cell_size * self.rows
-    #     im = Image.new("RGB", (img_width + 1, img_height + 1), canvas_color)
-    #
-    #     # Create a drawable version of the image
-    #     draw = ImageDraw.Draw(im)
-    #
-    #     # Draw each of the cells onto the image
-    #     for row in self.grid:
-    #         # Iterate through each mode, one iteration to loop through backgrounds, another to do cell walls
-    #         for mode in ["backgrounds", "walls"]:
-    #             for cell in row:
-    #                 # Calc the northwest and southeast corner points, accounting for
-    #                 x1 = cell.column * cell_size
-    #                 y1 = cell.row * cell_size
-    #                 x2 = (cell.column + 1) * cell_size
-    #                 y2 = (cell.row + 1) * cell_size
-    #
-    #                 if mode == "backgrounds":
-    #                     color = self.background_color_for(cell)
-    #                     if color:
-    #
-    #                         western_boundary = x1
-    #                         eastern_boundary = x2
-    #                         northern_boundary = y1
-    #                         southern_boundary = y2
-    #
-    #                         # Need to adjust for line boundaries here, as far as I can tell, PIL will set the line
-    #                         # at the midpoint of the line width, which is why we're using 0.5 here
-    #
-    #                         if not cell.north or not cell.is_linked(cell.north):
-    #                             northern_boundary += 0.5 * line_thickness
-    #
-    #                         if not cell.west or not cell.is_linked(cell.west):
-    #                             western_boundary += 0.5 * line_thickness
-    #
-    #                         if not cell.is_linked(cell.south):
-    #                             southern_boundary -= 0.5 * line_thickness
-    #
-    #                         if not cell.is_linked(cell.east):
-    #                             eastern_boundary -= 0.5 * line_thickness
-    #
-    #                         draw.rectangle(
-    #                             (
-    #                                 (western_boundary, northern_boundary),
-    #                                 (eastern_boundary, southern_boundary),
-    #                             ),
-    #                             color,
-    #                             color,
-    #                         )
-    #                 else:
-    #                     # Since every cell draws its southern and eastern borders, we only have to
-    #                     # draw northern and western borders if the cell has no neighbor in that direction
-    #                     if not cell.north:
-    #                         draw.line(((x1, y1), (x2, y1)), line_color, line_thickness)
-    #
-    #                     if not cell.west:
-    #                         draw.line(((x1, y1), (x1, y2)), line_color, line_thickness)
-    #
-    #                     # Every cell draws its own southern and eastern borders unless it is linked to that neighbor
-    #                     if not cell.is_linked(cell.south):
-    #                         draw.line(((x1, y2), (x2, y2)), line_color, line_thickness)
-    #
-    #                     if not cell.is_linked(cell.east):
-    #                         draw.line(((x2, y1), (x2, y2)), line_color, line_thickness)
-    #
-    #     return im
+
+if __name__ == "__main__":
+    test = Grid(10, 10)
+    print(test)

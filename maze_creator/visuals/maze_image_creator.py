@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 
 
 # TODO: Need to figure out a class hierarchy that can deal with this
@@ -61,15 +61,23 @@ class MazeImageCreator:
         draw = ImageDraw.Draw(im)
 
         # Draw each of the cells onto the image
+        current_row = 0
         for row in self.grid.each_row():
             # Iterate through each mode, one iteration to loop through backgrounds, another to do cell walls
             for mode in ["backgrounds", "walls"]:
+                current_column = 0
                 for cell in row:
-                    # Calc the northwest and southeast corner points, accounting for
-                    x1 = cell.column * cell_size
-                    y1 = cell.row * cell_size
-                    x2 = (cell.column + 1) * cell_size
-                    y2 = (cell.row + 1) * cell_size
+                    if cell is None:
+                        x1 = current_column * cell_size
+                        y1 = current_row * cell_size
+                        x2 = (current_column + 1) * cell_size
+                        y2 = (current_row + 1) * cell_size
+                    else:
+                        # Calc the northwest and southeast corner points, accounting for
+                        x1 = cell.column * cell_size
+                        y1 = cell.row * cell_size
+                        x2 = (cell.column + 1) * cell_size
+                        y2 = (cell.row + 1) * cell_size
 
                     if mode == "backgrounds":
                         color = self.background_color_for(cell)
@@ -104,19 +112,49 @@ class MazeImageCreator:
                                 color,
                             )
                     else:
-                        # Since every cell draws its southern and eastern borders, we only have to
-                        # draw northern and western borders if the cell has no neighbor in that direction
-                        if not cell.north:
-                            draw.line(((x1, y1), (x2, y1)), line_color, line_thickness)
+                        # Hack for masked cells
+                        if cell is None:
+                            if current_row == 0:
+                                draw.line(
+                                    ((x1, y1), (x2, y1)), line_color, line_thickness
+                                )
 
-                        if not cell.west:
-                            draw.line(((x1, y1), (x1, y2)), line_color, line_thickness)
+                            if current_column == 0:
+                                draw.line(
+                                    ((x1, y1), (x1, y2)), line_color, line_thickness
+                                )
 
-                        # Every cell draws its own southern and eastern borders unless it is linked to that neighbor
-                        if not cell.is_linked(cell.south):
                             draw.line(((x1, y2), (x2, y2)), line_color, line_thickness)
 
-                        if not cell.is_linked(cell.east):
                             draw.line(((x2, y1), (x2, y2)), line_color, line_thickness)
 
-        return im.show()
+                        else:
+                            # Since every cell draws its southern and eastern borders, we only have to
+                            # draw northern and western borders if the cell has no neighbor in that direction
+                            if not cell.north:
+                                draw.line(
+                                    ((x1, y1), (x2, y1)), line_color, line_thickness
+                                )
+
+                            if not cell.west:
+                                draw.line(
+                                    ((x1, y1), (x1, y2)), line_color, line_thickness
+                                )
+
+                            # Every cell draws its own southern and eastern borders unless it is linked to that neighbor
+                            if not cell.is_linked(cell.south):
+                                draw.line(
+                                    ((x1, y2), (x2, y2)), line_color, line_thickness
+                                )
+
+                            if not cell.is_linked(cell.east):
+                                draw.line(
+                                    ((x2, y1), (x2, y2)), line_color, line_thickness
+                                )
+
+                    current_column += 1
+
+            current_row += 1
+
+        img_with_border = ImageOps.expand(im, border=10, fill="black")
+        return img_with_border.show()

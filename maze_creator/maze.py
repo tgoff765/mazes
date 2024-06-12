@@ -46,13 +46,13 @@ if __name__ == "__main__":
     og = MazeImageCreator(maze)
     og.draw()
 
-    path_view = PathFinderView(maze, 0, 0,49,49)
-    image = MazeImageCreator(maze=path_view, type ="path")
+    path_view = PathFinderView(maze, 0, 0, 49, 49)
+    image = MazeImageCreator(maze=path_view, type="path")
     image.draw()
 
     distances_view = DistancesView(maze, 0, 40)
     image2 = MazeImageCreator(distances_view, "distance")
-    image2.draw(canvas_color=(124,64,12))
+    image2.draw(canvas_color=(124, 64, 12))
 
     image3 = MazeImageCreator(maze, "openings")
     image3.draw()
