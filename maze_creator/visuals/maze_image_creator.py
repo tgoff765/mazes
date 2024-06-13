@@ -138,7 +138,7 @@ class MazeImageCreator:
                                 color,
                             )
                     else:
-                        # Hack for masked cells
+                        # Hack for masked cells, only draw border if on edge
                         if cell is None:
                             if current_row == 0:
                                 draw.line(
@@ -150,9 +150,15 @@ class MazeImageCreator:
                                     ((x1, y1), (x1, y2)), line_color, line_thickness
                                 )
 
-                            draw.line(((x1, y2), (x2, y2)), line_color, line_thickness)
+                            if current_row == self.maze.grid.rows - 1:
+                                draw.line(
+                                    ((x1, y2), (x2, y2)), line_color, line_thickness
+                                )
 
-                            draw.line(((x2, y1), (x2, y2)), line_color, line_thickness)
+                            if current_column == self.maze.grid.columns - 1:
+                                draw.line(
+                                    ((x2, y1), (x2, y2)), line_color, line_thickness
+                                )
 
                         else:
                             # Since every cell draws its southern and eastern borders, we only have to
