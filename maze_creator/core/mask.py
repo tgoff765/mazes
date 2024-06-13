@@ -1,5 +1,6 @@
 from random import randint
 from typing import Union
+import os
 
 
 class Mask:
@@ -25,11 +26,11 @@ class Mask:
         """
         Pick a random location from the gird that's enabled
         """
-        x = randint(0, self.rows - 1)
-        y = randint(0, self.columns - 1)
+        x = randint(0, self.columns - 1)
+        y = randint(0, self.rows - 1)
         while not (self.bits[y][x]):
-            x = randint(0, self.rows - 1)
-            y = randint(0, self.columns - 1)
+            x = randint(0, self.columns - 1)
+            y = randint(0, self.rows - 1)
 
         return (y, x)
 
@@ -42,3 +43,33 @@ class Mask:
         if 0 <= y <= (self.rows - 1) and 0 <= x <= (self.columns - 1):
             return self.bits[y][x]
         return None
+
+    @staticmethod
+    def from_txt(file):
+        path = os.path.abspath(file)
+        f = open(path, "r")
+        lines = f.readlines()
+        f.close()
+
+        cleaned_lines = [l.strip() for l in lines]
+        rows = len(cleaned_lines)
+        columns = len(cleaned_lines[0])
+        mask = Mask(rows, columns)
+
+        cur_row = 0
+        cur_col = 0
+        while cur_row < rows:
+            while cur_col < columns:
+                if cleaned_lines[cur_row][cur_col] == "X":
+                    mask.bits[cur_row][cur_col] = False
+                cur_col += 1
+
+            cur_col = 0
+            cur_row += 1
+
+        return mask
+
+
+if __name__ == "__main__":
+    mask = Mask.from_txt("../../docs/masks/simple_mask.txt")
+    print(mask)

@@ -9,6 +9,10 @@ from maze_creator.views.path_finder_view import PathFinderView
 from maze_creator.views.distances_view import DistancesView
 from visuals.maze_image_creator import MazeImageCreator, ColorChoice
 
+# Maze = Grid + Algorithm
+# MaskedMaze = MaskedGrid + Algorithm
+# View = Maze + View (can't just be a grid because then there are no connections)
+
 
 class Maze:
     """
@@ -45,7 +49,7 @@ class Maze:
 
 
 if __name__ == "__main__":
-    maze = Maze(50, 50, "Hunt")
+    maze = Maze(50, 50, "aldous")
     og = MazeImageCreator(maze)
     og.draw()
 
@@ -53,9 +57,9 @@ if __name__ == "__main__":
     image = MazeImageCreator(maze=path_view, type="path")
     image.draw()
 
-    distances_view = DistancesView(maze, 0, 40)
-    image2 = MazeImageCreator(distances_view, "distance", ColorChoice.YELLOW)
-    image2.draw(canvas_color=(124, 64, 12))
+    distances_view = DistancesView(maze, 0, 25)
+    image2 = MazeImageCreator(distances_view, "distance", ColorChoice.RED)
+    image2.draw()
 
     image3 = MazeImageCreator(maze, "openings")
     image3.draw()

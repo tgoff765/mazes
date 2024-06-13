@@ -32,15 +32,6 @@ class MaskedGrid(Grid):
             current_column = 0
             current_row += 1
 
-        # for row in self.grid:
-        #     for c in row:
-        #         # Remove is problematic here because it shifts everything over, do we just want to insert an empty list?
-        #         if not self.mask.bits[row_num][col_num]:
-        #             self.grid[row_num][col_num] = None
-        #         col_num += 1
-        #     col_num = 0
-        #     row_num += 1
-
     def random_cell(self):
         row, col = self.mask.random_location()
         return self.grid[row][col]
@@ -50,11 +41,7 @@ class MaskedGrid(Grid):
 
 
 if __name__ == "__main__":
-    grid = Grid(4, 4)
-    mask = Mask(4, 4)
-    mask.bits[0][2] = False
-    mask.bits[1][1] = False
+    mask = Mask.from_txt("../../docs/masks/olaf.txt")
     test = MaskedGrid(mask)
-    print(test.grid)
     test2 = RecursiveBackTracker.create_maze(test)
     print(test2)

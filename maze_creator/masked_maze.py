@@ -22,16 +22,13 @@ class MaskedMaze:
 
 
 if __name__ == "__main__":
-    mask = Mask(20, 20)
-    mask.bits[1][1] = False
-    mask.bits[2][2] = False
-    mask.bits[3][3] = False
+    mask = Mask.from_txt("../docs/masks/olaf.txt")
 
     test = MaskedMaze(mask, "Recursive")
     og = MazeImageCreator(test)
     og.draw()
 
-    distances_view = DistancesView(test, 19, 19)
+    distances_view = DistancesView(test, 1, 0)
     image2 = MazeImageCreator(
         distances_view, "distance", color_choice=ColorChoice.DARKGREEN
     )
