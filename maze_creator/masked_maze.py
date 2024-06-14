@@ -1,4 +1,7 @@
+from maze_creator.algos.aldousbroder import AldousBroder
+from maze_creator.algos.huntandkill import HuntAndKill
 from maze_creator.algos.recursivebacktracker import RecursiveBackTracker
+from maze_creator.algos.wilson import Wilson
 from maze_creator.core.mask import Mask
 from maze_creator.grids.masked_grid import MaskedGrid
 from maze_creator.views.distances_view import DistancesView
@@ -14,17 +17,32 @@ class MaskedMaze:
         self.rows = mask.rows
         self.columns = mask.columns
 
-        if type == "Recursive":
+        if type == "recursive":
             self.grid = RecursiveBackTracker.create_maze(self.grid)
+        elif type == "aldous":
+            self.grid = AldousBroder.create_maze(self.grid)
+        elif type == "binary":
+            raise Exception("Masked grids can't use binary algorithm.")
+        elif type == "hunt":
+            self.grid = HuntAndKill.create_maze(self.grid)
+        elif type == "recursive":
+            self.grid = RecursiveBackTracker.create_maze(self.grid)
+        elif type == "side":
+            raise Exception("Masked grids can't use sidewinder algorithm.")
+        elif type == "wilson":
+            self.grid = Wilson.create_maze(self.grid)
+        else:
+            raise Exception("Maze type not recognized")
 
     def __str__(self):
         return self.grid.__str__()
 
 
 if __name__ == "__main__":
+
     mask = Mask.from_txt("../docs/masks/olaf.txt")
 
-    test = MaskedMaze(mask, "Recursive")
+    test = MaskedMaze(mask, "wilson")
     og = MazeImageCreator(test)
     og.draw()
 
