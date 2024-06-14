@@ -1,6 +1,7 @@
 from random import randint
 from typing import Union
 import os
+from PIL import Image
 
 
 class Mask:
@@ -69,7 +70,26 @@ class Mask:
 
         return mask
 
+    @staticmethod
+    def from_image(image):
+        path = os.path.abspath(image)
+        img = Image.open(path)
+        mask = Mask(img.height, img.width)
+        cur_row = 0
+        cur_col = 0
+        while cur_row < img.height:
+            while cur_col < img.width:
+                pixel_color = img.getpixel((cur_col,cur_row))
+                if pixel_color == (0,0,0):
+                     mask.bits[cur_row][cur_col] = False
+                cur_col += 1
+
+            cur_col = 0
+            cur_row += 1
+
+        return mask
+
 
 if __name__ == "__main__":
-    mask = Mask.from_txt("../../docs/masks/simple_mask.txt")
+    mask = Mask.from_image("../../docs/masks/olaf.png")
     print(mask)

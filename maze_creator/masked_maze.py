@@ -40,13 +40,13 @@ class MaskedMaze:
 
 if __name__ == "__main__":
 
-    mask = Mask.from_txt("../docs/masks/olaf.txt")
+    mask = Mask.from_image("../docs/masks/test.png")
 
     test = MaskedMaze(mask, "wilson")
     og = MazeImageCreator(test)
     og.draw()
 
-    distances_view = DistancesView(test, 1, 0)
+    distances_view = DistancesView(test, 0, 0)
     image2 = MazeImageCreator(
         distances_view, "distance", color_choice=ColorChoice.DARKGREEN
     )
